@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container my-4">
+    <h2 class="mb-4">Panel de Administración</h2>
+
+    <!-- Enlace al Catálogo corregido -->
+    <div class="mb-4">
+        <a href="{% url 'libros' %}" class="btn btn-outline-secondary">Ver Catálogo</a>
+    </div>
+
+    <!-- Contenedor de las Tarjetas de Estadísticas en 2 Columnas -->
+    <div class="row text-center mb-5">
+        
+        <!-- Tarjeta 1 -->
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm border-primary h-100"> 
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Total de Libros</h5>
+                    <p class="display-5 fw-bold text-success">{{ total_libros }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta 2 -->
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm border-primary h-100"> 
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Libros Disponibles</h5>
+                    <p class="display-5 fw-bold text-success">{{ libros_disponibles }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm border-primary h-100"> 
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Libros Prestados</h5>
+                    <p class="display-5 fw-bold text-success">{{ libros_prestados }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta 4 -->
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm border-primary h-100"> 
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Total de Usuarios</h5>
+                    <p class="display-5 fw-bold text-success">{{ total_usuarios }}</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+<!-- Fila para la tabla de usuarios / clientes -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card p-3 shadow-sm">
+                <h4>Lista de Clientes Registrados</h4>
+                <table class="table table-striped align-middle mt-2">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Nombre</th>
+                            <th>Teléfono</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in usuarios %}
+                        <tr>
+                            <td>{{ c.cliente_id }}</td>
+                            <td><strong>{{ c.nombre }}</strong></td>
+                            <td>{{c.}}
+                            <td>{{ c.telefono|default:"No registrado" }}</td>
+                            <td>
+                                {% if c.estado %}
+                                    <span class="badge bg-success">Habilitado</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inhabilitado</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">No hay clientes registrados.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Accesos Rapidos o Acciones  de gestion -->
+<div class="card shadow-sm"> 
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0"> Acciones Rapidas del sistema </h5>
+    </div>    
+    <div class="card shadow-sm border-primary mb-3"> 
+        <p class="text-muted">Utiliza los accesos directos para Administrar inventario </p>            
+        <a href="{% url 'agregar_libro' %}" class="btn btn-primary me-2"> Registrar nuevo Libro </a>
+        <a href="{% url 'libros' %}" class="btn btn-outline-secondary"> Ver Catalago </a>
+    </div>
+</div>
+
+{% endblock %}

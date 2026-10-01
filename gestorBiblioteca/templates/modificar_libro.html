@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+        <div class="col-md-7">
+            <h2 class="mb-4">Modificar Libro y Autor</h2>
+            <form method="POST">
+              {% csrf_token %}
+                <!-- SECCIÓN: DATOS DEL LIBRO -->
+                <div class="card p-3 mb-3 shadow-sm">
+                    <h5 class="text-primary">Información del Libro</h5>
+                    
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título del Libro</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" value="{{ libro.titulo }}" required>
+                    </div>
+                    <!-- (El campo 'disponible' ya no se toca aquí) -->
+                </div>
+
+                <!-- SECCIÓN: DATOS DEL AUTOR -->
+                <div class="card p-3 mb-3 shadow-sm">
+                    <h5 class="text-primary">Información del Autor</h5>
+                    
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del Autor</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ libro.id_autor.nombre }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="nacionalidad" class="form-label">Nacionalidad</label>
+                        <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" value="{{ libro.id_autor.nacionalidad }}" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-warning w-100 py-2">Actualizar Cambios</button>
+            </form>
+            
+            <a href="{% url 'pagina_principal' %}" class="btn btn-link mt-3 p-0">Volver a la página principal</a>
+    </div>
+</div>        
+{% endblock %}    

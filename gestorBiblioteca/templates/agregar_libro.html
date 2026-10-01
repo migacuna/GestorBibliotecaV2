@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="POST">
+
+    {% csrf_token %}
+    
+    <h4> Agregar Libro </h4>
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" class="form-control" id="titulo" name="titulo" required>
+        </div>
+        <div class="card p-3 mb-3 shadow-sm">
+        <!-- SECCIÓN: DATOS DEL AUTOR (Se creará al vuelo) -->
+            <h5 class="text-primary">Información del Autor (Nuevo)</h5>
+            <div class="mb-3">
+                <label for="autor_nombre" class="form-label">Nombre del Autor</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="autor_nacionalidad" class="form-label">Nacionalidad</label>
+                <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" required>
+            </div>
+            <!-- podemos agregar mas atributosa nuestro formulario LIBRO -->
+        </div>
+    <button type="submit" class="btn btn-primary w-100">Guardar Libro</button>
+</form>
+
+{% endblock%}

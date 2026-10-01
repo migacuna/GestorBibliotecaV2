@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block titulo %} Lista de Libros {% endblock %}
+
+{% block content %}
+
+<!-- ACCIONES PARA EL ADMINISTRADOR (Crear/Modificar) -->
+{% if request.user.is_staff or request.user.is_superuser %}
+    <div class="alert alert-info">Panel de Administrador Activo</div>
+    <a href="{% url 'agregar_libro' %}" class="btn btn-success mb-3">Agregar Nuevo Libro (Admin)</a>
+{% endif %}
+
+<div class="card-body">
+    <br> <h4 class="card-title">Listado de Libros </h4> <br>
+    <div class="table-responsive">
+        <table class="table table-primary">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>TITULO</th>
+                    <th>AUTOR</th>
+                    <th>NACIONALIDAD</th>
+                    <th>ESTADO</th>
+                    <th>ACCIONES</th>
+                </tr>    
+            </thead>
+            <tbody>
+                {% for libro in libros %}
+                <tr>
+                   <td>{{ libro.libro_id}}</td>
+                   <td>{{ libro.titulo}}</td>
+                   <td>{{ libro.id_autor.nombre}}</td>
+                   <td>{{ libro.id_autor.nacionalidad}}</td>
+                   <td>
+                    {% if libro.disponible %}
+                        <span class="badge bg-warning"> Disponible </spam>
+                    {% else %}        
+                         <span class="badge bg-secondary"> Prestado </spam>       
+                    {% endif %}
+                   </td>
+                   <td>
+                    <!-- ACCIONES EXCLUSIVAS DE ADMIN: Editar -->
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                        <a name="" class="btn btn-success" href="{% url 'modificar_libro' libro.libro_id %}" rol="button"> EDITAR </a>
+                        <a> | </a>
+                        <a name="" class="btn btn-danger" href="{% url 'eliminar_libro' libro.libro_id %}" rol="button"> ELIMINAR </a>
+                    {% endif %}    
+                   </td>
+                   <td> 
+                    {% if libro.disponible %}
+                        <form action="{% url 'prestar_libro' libro.libro_id %}" method="POST" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-primary">Pedir Libro</button>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'devolver_libro' libro.libro_id %}" method="POST" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-primary">Devolver Libro</button>
+                        </form>
+                    {% endif %}
+                   </td>
+                </tr>
+                                       
+                {% endfor %}
+            </tbody>    
+        </table>    
+    </div>
+</div>
+
+{% endblock %}

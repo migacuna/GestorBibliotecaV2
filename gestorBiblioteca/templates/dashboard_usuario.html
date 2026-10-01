@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4"> 
+        <h2> Mi Panel de usuario </h2>
+        <spam class="badge bg-secondary fs-6">Historial y Prestamos </span>
+    </div>
+</div>
+
+<!-- Bienvanida Personalizada -->
+ <div class="alert alert-info shadow-sm" role="alert">
+    <p> !Hola, <strong>{{ request.user.username }} </strong> Aqui encontraras tu hitorial de de Libros </p>
+ </div>
+
+ <!-- Listado de libros Prestados al #usuario -->
+<div class="card shadow-sm">
+    <div class="card-header gb-primary text-white">
+        <h5 class="mb-0"> Libros Pedidos </h5>
+    </div>
+    <div class="card-body">
+    {% if libros_mios %}    
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>Titulo del Libro</th>
+                        <th>Autor</th>
+                        <th>Estado</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for libro in libros_mios %}
+                    <tr>
+                        <td>{{ libro.titulo }}</td>
+                        <td>{{ libro.id_autor.nombre }}</td>
+                        <td><spam class="badge bg-warning text-dark"> En mi Poder </spam></td>
+                        <td>
+                            <form action="{% url 'devolver_libro' libro.libro_id %}" method="POST" class="d-line">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger">Devolver Libro </button>
+                            </form>
+                        </td>
+                    <tr>
+                    {% endfor %}    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center p-4">
+        <p class="text-muted mb-3">Actualmente No tiene libros Pedidos </p>
+        <a href="{% url 'libros' %}" class="btn btn-primary btn-sm">Explorar catalogo </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

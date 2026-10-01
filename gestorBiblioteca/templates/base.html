@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block titulo %} {% endblock  %} </title> 
+        <meta name="description" content="Sistema de Gestion de Bibliteca">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 shadow-sm">
+                <div class="container-fluid">
+        
+                <!-- 1. Menú de Enlaces a la Izquierda -->
+                <div class="navbar-nav me-auto">
+                    <a class="nav-item nav-link" href="{% url 'pagina_principal' %}">Home</a>
+                    <a class="nav-item nav-link" href="{% url 'libros' %}">Libros</a>
+                    <a class="nav-item nav-link" href="#">Clientes</a>
+                    <a class="nav-item nav-link" href="{% url 'dashboard' %}">Mi Dashboard</a>
+            
+                    <!-- Botón extra solo para Admin dentro del menú -->
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                        <a class="nav-item nav-link text-warning" href="{% url 'agregar_libro' %}">+ Agregar Libro</a>
+                    {% endif %}
+                </div>
+
+                <!-- 2. Sección de Usuario / Sesión a la Derecha -->
+                <div class="d-flex align-items-center ms-auto">
+                    {% if request.user.is_authenticated %}
+                        <!-- Saludo y rol -->
+                        <span class="text-light me-2">Bienvenido, <strong>{{ request.user.username }}</strong></span>
+                
+                        {% if request.user.is_staff or request.user.is_superuser %}
+                            <span class="badge bg-danger ms-1 me-3">Admin</span>
+                        {% else %}
+                            <span class="badge bg-secondary ms-1 me-3">Usuario</span>
+                        {% endif %}
+
+                        <!-- Botón Cerrar Sesión -->
+                        <form action="{% url 'logout' %}" method="post" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-light btn-sm">Cerrar Sesión</button>
+                        </form>
+
+                    {% else %}
+                        <!-- Botón Iniciar Sesión (si aplica) -->
+                        <span class="text-muted me-2">Invitado</span>
+                        <a href="{% url 'login' %}" class="btn btn-primary btn-sm">Iniciar Sesión</a>
+                    {% endif %}
+                </div>
+                </div>
+            </nav>
+            <br>
+        </header>
+        <main>
+            <br>
+            <div class="container">
+                <div class="row">
+                    {% block content %}
+
+                    {% endblock %}
+                </div>    
+            </div>
+        </main>
+        <br>
+        <hr>
+        <footer class="text-bg-primary p-3"> Logo - Direccion - Telefono - RRSS  </footer>
+        <script src="" async defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    </body>
+</html>
